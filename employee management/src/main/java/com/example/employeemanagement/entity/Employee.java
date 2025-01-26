@@ -2,17 +2,15 @@
 package com.example.employeemanagement.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Entity
@@ -21,24 +19,32 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(name = "firstname")
     private String firstname;
+
+    @Column(name = "lastname")
     private String lastname;
+
+    @Column(name = "email")
     private String email;
 
     public Employee() {
         id=0;
         firstname="";
-        lastname="00000";
+        lastname="";
         email="";
     }
 
-
-
-    public Employee(String firstname, String lastname, String email) {
+    public Employee(long id, String firstname, String lastname, String email) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
     }
+
+
+
 
 
     public long getId() {
@@ -72,6 +78,12 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @PostMapping
+    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
+        return ResponseEntity.ok(employee);
+    }
+
 
 
 
